@@ -35,7 +35,7 @@ class CarServiceTest {
     }
 
     @Autowired
-    @Qualifier("myConversionService")
+    @Qualifier("mvcConversionService")
     private ConversionService myConversionService;
 
     private CarService carService;

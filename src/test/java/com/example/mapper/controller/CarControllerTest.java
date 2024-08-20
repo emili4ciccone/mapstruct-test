@@ -5,12 +5,13 @@ import com.example.mapper.service.CarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.extensions.spring.test.ConverterScan;
+import org.mapstruct.extensions.spring.converter.ConverterScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.ConfigurableConversionService;
@@ -38,6 +39,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {CarController.class})
 class CarControllerTest {
+
+    @Configuration
+    @ComponentScan("org.mapstruct.extensions.spring")
+    @ComponentScan("com.example.mapper.mapper")
+    @ConverterScan(basePackageClasses = MapperSpringConfig.class)
+    static class AdditionalBeanConfiguration {
+        @Bean
+        ConfigurableConversionService myConversionService() {
+            return new DefaultConversionService();
+        }
+    }
+
+    @Autowired
+    @Qualifier("mvcConversionService")
+    private ConversionService myConversionService;
 
     private MockMvc mockMvc;
     private final MultiValueMap<String, String> paramsHeader = new LinkedMultiValueMap<>();
