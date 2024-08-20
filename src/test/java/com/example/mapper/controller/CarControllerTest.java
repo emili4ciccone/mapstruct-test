@@ -1,20 +1,24 @@
 package com.example.mapper.controller;
 
-import com.example.mapper.config.ControllerTestSliceConfiguration;
-import com.example.mapper.data.bean.Car;
-import com.example.mapper.mapper.CarDtoToBeanMapperImpl;
+import com.example.mapper.config.MapperSpringConfig;
 import com.example.mapper.service.CarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.extensions.spring.test.ConverterScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.ConfigurableConversionService;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -32,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ControllerTestSliceConfiguration.class, CarController.class})
+@ContextConfiguration(classes = {CarController.class})
 class CarControllerTest {
 
     private MockMvc mockMvc;
@@ -43,9 +47,6 @@ class CarControllerTest {
 
     @MockBean
     private CarService carServiceMock;
-
-    @MockBean
-    private CarDtoToBeanMapperImpl carDtoToBeanMapper;
 
     @BeforeEach
     void init() {
